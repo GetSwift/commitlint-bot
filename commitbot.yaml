@@ -1,24 +1,36 @@
 
-apiVersion: 1
-kind: CronJob
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: commitlint-bot
 spec:
-  schedule: "0 17 * * *"
-  jobTemplate:
+  replicas: 1
+  selector:
+      matchLabels:
+          app: commitlint-bot
+  template:
+    metadata:
+      labels: 
+        app: commitlint-bot
+        
     spec:
-      template:
-        spec:
-          volumes:
-            - name: config-vol
-              configMap:
-                name: rr-ftp-config
-          cotainers:
-          - name: rr-ftp
-            image: quay.io/getswift/rr-ftp:v1.1.0
-            volumeMounts:
-            - name: config-vol
-              mountPath: /app/config
-            command:
-              - /app/rr-ftp
-          restartPolicy: OnFailure
+      volumes:
+        - name: config-vol
+          configMap:
+            name: commitlint-bot-config
+      imagePullSecrets: [
+          {
+            "name": "dockerhub"
+          },
+          {
+            "name": "quay"
+          }
+        ]
+      containers:
+      - name: commitlint-bot
+        image: quay.io/getswift/commitlint-bot
+        volumeMounts:
+        - name: config-vol
+          mountPath: /
+        command:
+          - npm start
