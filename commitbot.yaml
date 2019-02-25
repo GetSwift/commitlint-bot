@@ -28,9 +28,17 @@ spec:
         ]
       containers:
       - name: commitlint-bot
-        image: quay.io/getswift/commitlint-bot
+        image: quay.io/getswift/commitlint-bot:latest
+        env:
+        - name: APP_NAME
+          value: Commit-bot
+        - name: APP_ID
+          value: "25979"
+        - name: PRIVATE_KEY_PATH
+          value: /app/config/commitlint-bot.pem
+        - name: WEBHOOK_SECRET
+          value: cbfa645d-6345-47b3-899c-483c6eca6abe
         volumeMounts:
         - name: config-vol
-          mountPath: /
-        command:
-          - npm start
+          mountPath: /config        
+        
