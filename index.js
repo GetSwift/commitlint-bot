@@ -6,5 +6,6 @@ module.exports = robot => {
   // https://probot.github.io/docs/
   robot.on("pull_request.opened", commitlint);
   robot.on("pull_request.synchronize", commitlint);
-  
+  robot.on("issue_comment.created", commitlint);
+
 };
