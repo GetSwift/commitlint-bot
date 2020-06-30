@@ -7,5 +7,6 @@ module.exports = robot => {
   robot.on("pull_request.opened", commitlint);
   robot.on("pull_request.synchronize", commitlint);
   robot.on("issue_comment.created", commitlint);
+  robot.on("pull_request.edited", commitlint);
 
 };
